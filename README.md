@@ -13,6 +13,6 @@ Copy paste the Program.cs code from this SeansOWINRestfulService into yoru poroj
 
 and run it.
 
-Self Hosetd RESTful service that supports GET, POST, PUT and DELETE against a vary basic data store is now running.
+Self Hosetd RESTful service that supports GET, POST, PUT and DELETE against a vary basic data store is now running at http://127.0.0.1:8080/
 
 
