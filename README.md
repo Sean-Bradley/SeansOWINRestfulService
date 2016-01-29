@@ -14,7 +14,7 @@ PM> Install-Package Microsoft.AspNet.WebApi.OwinSelfHost
 PM> Install-Package Microsoft.AspNet.WebApi.Cors
 
 
-Copy paste the Program.cs code from this SeansOWINRestfulService into yoru poroject Program.cs 
+Copy paste the Program.cs code from this SeansOWINRestfulService into your project Program.cs 
 
 and run it.
 
