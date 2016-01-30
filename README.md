@@ -21,3 +21,11 @@ and run it.
 Self Hosetd RESTful service that supports GET, POST, PUT and DELETE against a vary basic data store is now running at http://127.0.0.1:8080/
 
 
+Also included, 
+
+a basic index.html to test it with.
+
+The index.html is simple html and javascript, so you can host it on any webserver of your choice.
+
+
+
