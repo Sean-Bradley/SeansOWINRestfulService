@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Basic RESTful CRUD using GET, POST, PUT and DELETE</title>
+</head>
+<body>    
+    <div>
+        <h2>Basic RESTful CRUD using GET, POST, PUT and DELETE</h2>
+    </div>
+    <div id="AddPanel">
+        <h2>Add New</h2>
+        <input type="text" id="AddName" size="10" maxlength="10" />
+        <input type="text" id="AddCity" size="10" maxlength="10" />
+        <input type="button" id="Add" value="Add" />
+    </div>
+    <div id="EditPanel">
+        <h2>Edit</h2>
+        <input type="text" id="EditId" size="10" maxlength="10" readonly />
+        <input type="text" id="EditName" size="10" maxlength="10" />
+        <input type="text" id="EditCity" size="10" maxlength="10" />
+        <input type="button" id="Edit" value="Save" />
+    </div>
+    <div>
+        <h2>User List</h2>
+        <ul id="users" />
+    </div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        var uri = 'http://127.0.0.1:8080/api/users';
+        getUsers();
+        $("#EditPanel").hide();
+
+        function getUsers() {
+            $(document).ready(function () {
+                $.getJSON(uri)
+                    .done(function (data) {
+                        $("#users").html("");
+                        $.each(data, function (key, item) {
+                            $('<li>', { html: DeleteButton(item.Id) + " : " + EditButton(item) + " : " + formatItem(item) }).appendTo($('#users'));
+                        });
+                    });
+            });
+        }
+        function formatItem(item) {
+            return item.Id + " : " + item.Name + ' : ' + item.City;
+        }
+        function DeleteButton(id) {
+            return "<input type='button' value='Delete' onClick='JavaScript:Delete(" + id + ")'>";
+        }
+        function EditButton(item) {
+            return "<input type='button' value='Edit' onClick='JavaScript:ShowEdit(" + item.Id + ")'>";
+        }
+        function ShowEdit(id) {
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $('#EditId').val(data.Id);
+                    $('#EditName').val(data.Name);
+                    $('#EditCity').val(data.City);
+                    $("#EditPanel").show();
+                    $("#AddPanel").hide();
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    alert('Error: ' + err);
+                });      
+        }
+        $("#Add").click(function () {
+            var User = { Name: $('#AddName').val(), City: $('#AddCity').val() };
+            $.ajax({
+                url: uri,
+                type: 'POST',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(User),
+                success: function (data, textStatus, xhr) {
+                    getUsers();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Error in Operation');
+                }
+            });
+        });
+        function Delete(id) {
+            $.ajax({
+                url: uri + '/' + id,
+                type: 'DELETE',
+                contentType: "application/json;charset=utf-8",
+                success: function (data, textStatus, xhr) {
+                    getUsers();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Error in Operation');
+                }
+            });
+        }
+        $("#Edit").click(function () {
+            var id = $('#EditId').val()
+            var User = { Name: $('#EditName').val(), City: $('#EditCity').val() };
+            $.ajax({
+                url: uri + '/' + id,
+                type: 'PUT',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(User),
+                success: function (data, textStatus, xhr) {
+                    getUsers();
+                    $("#EditPanel").hide();
+                    $("#AddPanel").show();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Error in Operation');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
